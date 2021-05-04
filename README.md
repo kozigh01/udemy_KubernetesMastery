@@ -11,3 +11,11 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   # when done with shpod
   $ kubectl delete -f https://k8smastery.com/shpod.yaml
   ```
+
+## kubectl commands:
+* first look:
+  ```
+  $ kubectl get node
+  
+  $ kubectl get nodes -o json | jq ".items[] | {name: .metadata.name} + .status.capacity"
+  ```
