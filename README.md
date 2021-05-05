@@ -36,3 +36,7 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   $ kubectl -n kube-public get configmap
   $ kubectl -n kube-public get configmap cluster-info -o yaml
   ```
+* first deployment:
+  ```
+  $  kubectl run pingpong --image alpine ping 1.1.1.1
+  ```
