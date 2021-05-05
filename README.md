@@ -15,7 +15,15 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
 ## kubectl commands:
 * first look:
   ```
-  $ kubectl get node
-  
+  $ kubectl get node  
   $ kubectl get nodes -o json | jq ".items[] | {name: .metadata.name} + .status.capacity"
+  $ kubectl get nodes -o yaml
+  
+  $ kubectl describe node/docker-desktop
+  
+  $ kubectl api-resources
+  
+  $ kubectl explain node
+  $ kubectl explain node.spec
+  $ kubectl explain node --recursive
   ```
