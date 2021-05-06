@@ -39,4 +39,12 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
 * first deployment:
   ```
   $  kubectl run pingpong --image alpine ping 1.1.1.1
+  
+  $ kubectl logs -l run=pingpong --tail 3 -f
+  ```
+
+* Logs - stern tool
+  * stern: [github](https://github.com/wercker/stern)
+  ```
+  $
   ```
