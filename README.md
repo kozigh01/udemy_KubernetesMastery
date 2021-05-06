@@ -46,5 +46,5 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
 * Logs - stern tool
   * stern: [github](https://github.com/wercker/stern)
   ```
-  $
+  $ stern pingpong
   ```
