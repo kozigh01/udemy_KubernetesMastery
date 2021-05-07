@@ -19,4 +19,7 @@ jobs:
         with:
           node-version: 12
           registry-key: https://npm.pkg.github.com/
+      - name: fourth
+        run: echo $(PWD) && echo $(ls -lah)
+        
           
