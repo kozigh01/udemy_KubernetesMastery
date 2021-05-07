@@ -1,0 +1,14 @@
+name: build
+on: [push]
+jobs:
+  build:
+    name: my job
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: my first step
+        env:
+          MY_VAR: hi there!
+          FIRST_NAME: Mark
+          LAST_NAME: Kozi
+        run: echo $MY_VAR $FIRST_NAME $LAST_NAME
+          
