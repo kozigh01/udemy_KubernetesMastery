@@ -47,4 +47,5 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   * stern: [github](https://github.com/wercker/stern)
   ```
   $ stern pingpong
+  $ stern --tail 1 --timestamps pingpong
   ```
