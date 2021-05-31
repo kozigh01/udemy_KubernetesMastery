@@ -49,3 +49,21 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   $ stern pingpong
   $ stern --tail 1 --timestamps pingpong
   ```
+  
+* First Assignment:
+  ```
+  $ kubectl --help
+  
+  $ kubectl get node
+  $ kubectl get node -o wide
+  
+  $ kubectl get pod --namespace kube-system
+  
+  $ kubectl create deployment ticktock --image=bretfisher/clock
+  
+  $  kubectl scale --replicas=3 deployment/ticktock
+  
+  $ kubectl logs --tail=1 -lapp=ticktock
+  
+  $ kubectl delete deployment ticktock
+  ```
