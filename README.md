@@ -67,3 +67,11 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   
   $ kubectl delete deployment ticktock
   ```
+* Sample Application - DockerCoins
+  ```
+  # docker compose
+  $ curl -o docker-compose.yaml https://k8smastery.com/dockercoins-compose.yaml
+  $ docker-compose up
+  
+  $ docker apply -f https://
+  ```
