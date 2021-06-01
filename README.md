@@ -114,4 +114,34 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   $ RNG=$(kubectl get svc rng -o go-template={{.spec.clusterIP}} --namespace coin)
   $ httping -c 3 $HASHER
   $ httping -c 3 $RNG  # this seems slow
+
+
+  # get/deploy the manifest file for DockerCoin
+  $ curl -o dockercoins.yaml https://k8smastery.com/dockercoins.yaml
+  $ kubectl apply -f https://k8smastery.com/dockercoins.yaml --namespace coin
+  ```
+* Kubernetes Dashboard
+  site: [github](https://github.com/kubernetes/dashboard)
+  ```
+  # get the manifest
+  $ curl -o insecure-dashboard.yaml https://k8smastery.com/insecure-dashboard.yaml
+  $ kubectl apply -f https://k8smastery.com/insecure-dashboard.yaml
+  $ kubectl get service dashboard  # get port to access via localhost
+  ```
+* Kubernetes DaemonSet
+  ```
+  $ kubectl get deploy/rng -o yaml --namespace=coin > rng.yml
+  # copy to new file and change kind to DaemonSet
+  $ kubectl apply -f rng-daemonset.yml --namespace=coin  # has validation errors
+  $ kubectl apply -f rng-daemonset.yml --namespace=coin --validation=false
+  $ kubectl get all --namespace coin  # now have daemonset in addition to deployment for rng
+  $ kubectl describe service rng --namespace=coin   # notice the selector value
+  $ kubectl get pods --namespace coin --selector app=rng
+  $ kubectl get pods --namespace coin -l app=rng
+  $ kubectl delete deployment/rng --namespace=coin
+  ```
+* DockerCoins cleanup
+  ```
+  $ kubectl delete -f https://k8smastery.com/dockercoins.yaml --namespace coin
+  $ kubectl delete daemonset/rng --namespace coin
   ```
