@@ -145,3 +145,26 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   $ kubectl delete -f https://k8smastery.com/dockercoins.yaml --namespace coin
   $ kubectl delete daemonset/rng --namespace coin
   ```
+* Rolling Updates
+  ```
+  $ kubectl apply -f https://k8smastery.com/dockercoins.yaml --namespace coin  
+  $ kubectl get deploy --namespace coin -o json | jq ".items[] | {name: .metadata.name} + .spec.strategy.rollingUpdate"
+
+  # trigger update (while watching pods/deployments/replicasets)
+  $ kubectl set image deploy worker --namespace coin worker=dockercoins/worker:v0.2
+
+  # trigger update to non-existing image
+  $ kubectl set image deploy worker --namespace coin worker=dockercoins/worker:v0.3
+  $ kubectl rollout status deploy worker --namespace coin   # in seperate terminal
+
+  # trouble shooting
+  $ kubectl get pods --namespace coin   # trouble shooting
+  $ kubectl logs --namespace coin worker-6b6cd45fb6-qk4j2   # more trouble shooting
+  $ kubectl describe deploy/worker --namespace coin   # more trouble shooting
+
+  # return to previous versions
+  $ kubectl rollout undo deploy/worker --namespace coin   # undo last update
+  $ kubectl rollout history deploy worker --namespace coin
+  $ kubectl describe replicaset worker --namespace coin | grep -A3 Annotations  # annotaions info
+  $ kubectl rollout undo deployment worker --namespace coin --to-revision=1
+  ```
