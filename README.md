@@ -168,3 +168,26 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   $ kubectl describe replicaset worker --namespace coin | grep -A3 Annotations  # annotaions info
   $ kubectl rollout undo deployment worker --namespace coin --to-revision=1
   ```
+  * ConfigMap - Downward API example (introspection like)
+    Note: namespace can be used in fully qualified domain name: curl api-backend.$MY_POD_NAMESPACE.svc.cluster.local
+    ```yaml
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: envar-demo
+        labels:
+          purpose: demonstrate-envars
+       namespace: my-ns
+      spec:
+        containers:
+        - name: envar-demo-container
+          image: gcr.io/google-samples/node-hello:1.0
+          env:
+          - name: DEMO_FAREWELL
+            value: "Such a sweet sorrow"
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+    ```
+  * 
