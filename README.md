@@ -168,26 +168,80 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   $ kubectl describe replicaset worker --namespace coin | grep -A3 Annotations  # annotaions info
   $ kubectl rollout undo deployment worker --namespace coin --to-revision=1
   ```
-  * ConfigMap - Downward API example (introspection like)
-    Note: namespace can be used in fully qualified domain name: curl api-backend.$MY_POD_NAMESPACE.svc.cluster.local
-    ```yaml
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: envar-demo
-        labels:
-          purpose: demonstrate-envars
-       namespace: my-ns
-      spec:
-        containers:
-        - name: envar-demo-container
-          image: gcr.io/google-samples/node-hello:1.0
-          env:
-          - name: DEMO_FAREWELL
-            value: "Such a sweet sorrow"
-          - name: MY_POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-    ```
-  * 
+* ConfigMap - Downward API example (introspection like)
+  Note: namespace can be used in fully qualified domain name: curl api-backend.$MY_POD_NAMESPACE.svc.cluster.local
+  ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: envar-demo
+      labels:
+        purpose: demonstrate-envars
+      namespace: my-ns
+    spec:
+      containers:
+      - name: envar-demo-container
+        image: gcr.io/google-samples/node-hello:1.0
+        env:
+        - name: DEMO_FAREWELL
+          value: "Such a sweet sorrow"
+        - name: MY_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+  ```
+* ConfigMap - storing entire files
+  ```
+  $ kubectl create configmap my-app-config --from-file=app.config
+
+  # with key different than the file name
+  $ kubectl create configmap my-app-config --from-file=app.config=config.d/config-1.config --dry-run
+
+  # ConfigMap with multiple keys - one per file in the config.d directory
+  $ kubectl create configmap my-app-config --from-file=config.d --dry-run -o yaml 
+  ```
+* ConfigMap - storing individual values
+  ```
+  $ kubectl create configmap my-app-config --from-literal=foreground=red --from-literal=background=blue --dry-run -o yaml
+
+  # from key value file
+    $ kubectl create configmap my-app-config --from-env-file=config.d/app.conf --dry-run -o yaml
+  ```
+* ConfigMap - haproxy example: config map with file contents
+  ```
+  # create the configmap
+  $ cd configmap-haproxy
+  $ curl -O https://k8smastery.com/haproxy.cfg
+  $ kubectl create configmap haproxy --from-file=haproxy.cfg
+  $ kubectl get configmap haproxy -o yaml
+
+  # use the configmap
+  $ kubectl apply -f pod-haproxy.yaml  # or: kubectl apply -f https://k8smastery.com/haproxy.yaml
+  $ kubectl attach --namespace=shpod -it shpod
+  shpod$ kubectl get pod haproxy -o wide
+  shpod$ IP=$(kubectl get pod haproxy -o json | jq -r .status.podIP)
+  shpod$ curl $IP
+  shpod$ curl $IP
+  shpod$ curl $IP
+
+  # cleanup
+  $ kubectl delete configmap/haproxy pod/haproxy
+  ```
+* ConfigMap - individual key/values
+  ```
+  # create configmap
+  $ kubectl create configmap registry --from-literal=http.addr=0.0.0.0:80
+  $ kubectl get configmap registry -o yaml
+
+  # use configmap
+  $ cd configmap-registry 
+  $ kubectl apply -f pod-registry.yaml
+  $ kubectl attach --namespace=shpod -it shpod
+  shpod$ kubectl get pod registry -o wide
+  shpod$ IP=$(kubectl get pod registry -o json | jq -r .status.podIP)
+  shpod$ curl $IP/v2/_catalog
+  shpod$ exit
+
+  # cleanup
+  $ kubectl delete configmap/registry pod/registry
+  ```
