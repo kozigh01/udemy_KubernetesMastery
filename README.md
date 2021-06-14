@@ -245,3 +245,6 @@ Udemy course: Kubernetes Mastery: Hands-On Lessons From A Docker Captain
   # cleanup
   $ kubectl delete configmap/registry pod/registry
   ```
+* Ingress
+  * DNS: [nip.io](https://nip.io/)
+  * Ingress Controller - nginx for Docker Desktop
